@@ -1,0 +1,32 @@
+{
+  "name": "suddenschema",
+  "description": "JSON schema discovery from a collection",
+  "homepage": "https://github.com/SuddenDevelopment/SuddenSchema",
+  "version": "0.1",
+  "contributors": [
+    "Anthony Aragues <anthony.aragues@gmail.com>"
+  ],
+  "dependencies": {},
+  "main": "suddenschema.js",
+  "devDependencies": {
+    "mocha": "^2.1.0",
+    "should": "^4.4.2"
+  },
+  "scripts": {
+    "test": "mocha -R spec ./test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SuddenDevelopment/SuddenSchema.git"
+  },
+  "keywords": [
+    "JSON",
+    "Schema"
+  ],
+  "author": "Anthony Aragues <anthony.aragues@gmail.com> (http://suddendevelopment.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SuddenDevelopment/SuddenSchema/issues"
+  },
+  "readmeFilename": "README.md"
+}

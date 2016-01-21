@@ -18,7 +18,7 @@
 if (typeof window == 'undefined'){var utils = require('./utils.js');}
 var _ = new utils;
 var SuddenSchema = function(objConfig){
-	var modVal = {},newVal={};
+	var modVal = {},newVal={},endVal{};
 	var intSampleLimit=100;
 	var self=this;
 	this.newSchema=function(arrCollection){
@@ -35,10 +35,7 @@ var SuddenSchema = function(objConfig){
 
 		//run any final checks at the end that we didnt want to do every object or periodically
 		_.for(objSchema.keys,function(v,k){
-			if(v.type==='string'){
-				//test for cardinality
-				_.unique(objSchema.vals[v]).length;
-			}
+			objSchema.vals[v] = this.endVal[v.type](objSchema.vals[v]);
 		});
 
 		return objSchema;
@@ -86,6 +83,7 @@ var SuddenSchema = function(objConfig){
 		objVal.max=val;		
 		objVal.first=val;
 		objVal.last=val;
+		objVal.dataTypes=[];
 		return objVal;
 	};
 	newVal.string=function(val,objVal){
@@ -94,10 +92,13 @@ var SuddenSchema = function(objConfig){
 		objVal.min=intLength;
 		objVal.max=intLength;
 		objVal.samples=[val];
+		objVal.dataTypes=[];
 		return objVal;
 	};
 	newVal.function=function(val,objVal){
-		
+		//convert the function to a string
+		val=val.toString();
+		return objVal; 
 	};
 //----====|| ModValues ||====----\\
 	modVal.object=function(val,objVal){
@@ -132,10 +133,29 @@ var SuddenSchema = function(objConfig){
 		}
 		return objVal;
 	};
-	modVal.function=function(val,objVal){
+	modVal.function=function(objVal){
 		
 	};
 //----====|| FINAL CALCS ||====----\\
+	endVal.object=function(objVal){
+		//When this happens it means the object wasnt mapped out for properties to be added to keys yet OR it's an array
 
+		return objVal;
+	};
+	endVal.boolean=function(objVal){
+
+		return objVal;
+	};
+	endVal.number=function(objVal){
+
+		return objVal;
+	};
+	endVal.string=function(objVal){
+		objVal.cardinality= _.unique(objVal.samples).length;
+		return objVal;
+	};
+	endVal.function=function(objVal){
+		return objVal;
+	};
 }
 if (typeof module !== 'undefined' && module.exports){module.exports = SuddenStats;}

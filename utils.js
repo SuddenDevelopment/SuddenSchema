@@ -34,7 +34,7 @@ var utils = function(){
      self.deepKeys = function(objData){
         var arrKeys = [];
         self.forOwn(objData,function(v,k){
-            if(typeof v ==='object'){ 
+            if(typeof v ==='object' && val.constructor!==Array){ 
                 self.forEach(self.deepKeys(v),function(vv,kk){
                     arrKeys.push(k+'.'+vv);
                 }); 

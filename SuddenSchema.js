@@ -15,7 +15,7 @@
 
 */
 
-if (typeof window == 'undefined'){var utils = require('./utils.js');}
+if (typeof window == 'undefined'){var utils = require('suddenutils');}
 var _ = new utils;
 var SuddenSchema = function(objConfig){
 	var modVal = {},newVal={},endVal{};
@@ -66,7 +66,7 @@ var SuddenSchema = function(objConfig){
 		if(val.constructor===Array){
 
 		}else{
-
+			//we should never get here because every object has deepkeys run on it and added to the keys in the schema
 		}
 		return objVal;
 	};
@@ -84,6 +84,7 @@ var SuddenSchema = function(objConfig){
 		objVal.first=val;
 		objVal.last=val;
 		objVal.dataTypes=[];
+		objVal.samples=[val]
 		return objVal;
 	};
 	newVal.string=function(val,objVal){
@@ -106,7 +107,7 @@ var SuddenSchema = function(objConfig){
 		if(val.constructor===Array){
 			
 		}else{
-
+			//get the path, add it to the keys, run it bac
 		}
 		return objVal;
 	};

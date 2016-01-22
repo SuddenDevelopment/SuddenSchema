@@ -6,7 +6,9 @@
   "contributors": [
     "Anthony Aragues <anthony.aragues@gmail.com>"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "suddenutils": "^1.0.0"
+  },
   "main": "suddenschema.js",
   "devDependencies": {
     "mocha": "^2.1.0",

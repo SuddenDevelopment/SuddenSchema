@@ -6,7 +6,8 @@
 - Gives all of the keys found, across all objects, recursively
 - Gives generic data types per key: number, string, boolean
 - Arrays have all of the data types defined within them including obejct definitions, mixed data tpyes included.
-- Attempts to identify more specific data types: UnixTime, JSTime, IP, Email, URL, Domain, auto incrementing ID
+- Attempts to identify more specific data types: UnixTime, JSTime, IP, Email, URL, Domain, proper nouns, acronyms, auto incrementing ID
+- String Attributes: all caps, 
 - Gives cardinality, how many unique values exist (up to a limit) vs count.
 - Gives sample values
 - If Cardinality < values.length it's vrey useful to use for spliting into groups 
@@ -18,11 +19,11 @@
 if (typeof window == 'undefined'){var utils = require('suddenutils');}
 var _ = new utils;
 var SuddenSchema = function(objConfig){
-	var modVal = {},newVal={},endVal{};
+	var modVal = {},newVal={},endVal={};
 	var intSampleLimit=100;
 	var self=this;
 	this.newSchema=function(arrCollection){
-		return this.modSchema(arrCollection,{keys:{},values:{}});
+		return this.modSchema(arrCollection,{keys:{},vals:{}});
 	};
 
 	this.modSchema=function(arrCollection,objSchema){
@@ -30,7 +31,7 @@ var SuddenSchema = function(objConfig){
 
 		//process all of the objects
 		_.forEach(arrCollection,function(v,k){
-			this.addObject(v,objSchema);
+			self.addObject(v,objSchema);
 		});
 
 		//run any final checks at the end that we didnt want to do every object or periodically
@@ -45,17 +46,18 @@ var SuddenSchema = function(objConfig){
 		//update the keys
 		var arrKeys = _.deepKeys(obj);
 		arrKeys = arrKeys.concat(objSchema.keys);
-		arrkeys = _.unique(arrKeys);
+		arrKeys = _.unique(arrKeys);
 		//update the values
-		forEach(arrKeys,function(v,k){
+		_.forEach(arrKeys,function(v,k){
 			//make sure this object has the key we're looking for 1st
 			if(typeof obj[v]!=='undefined'){
 				if(typeof objSchema[v]==='undefined'){
-					objSchema.vals[v]=this.newVal[typeof v](v,{cnt:1});
+					//create new values object for a key based on var type
+					objSchema.vals[v]=newVal[typeof v](v,{cnt:1});
 				}
 				else{
 					objSchema.vals[v].cnt++;
-					objSchema.vals[v] = this.modVal[typeof v](v,objSchema[v]);
+					objSchema.vals[v] = self.modVal[typeof v](v,objSchema[v]);
 				}
 			}
 		});
@@ -129,7 +131,7 @@ var SuddenSchema = function(objConfig){
 		if(objVal.cnt%intSampleLimit===0){ 
 			//time to trim based on multiple of limit, good to do this in batches instead of every iteration
 			//find the trim point, in the middle, want to keep the oldest values for reference
-			var intStart=MAth.floor(intSampleLimit/2);
+			var intStart=Math.floor(intSampleLimit/2);
 			objVal.samples.splice(intStart,intSampleLimit);
 		}
 		return objVal;
@@ -159,4 +161,4 @@ var SuddenSchema = function(objConfig){
 		return objVal;
 	};
 }
-if (typeof module !== 'undefined' && module.exports){module.exports = SuddenStats;}
+if (typeof module !== 'undefined' && module.exports){module.exports = SuddenSchema;}

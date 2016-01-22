@@ -1,19 +1,13 @@
 {
   "name": "suddenschema",
-  "description": "JSON schema discovery from a collection",
-  "homepage": "https://github.com/SuddenDevelopment/SuddenSchema",
-  "version": "0.1",
-  "contributors": [
-    "Anthony Aragues <anthony.aragues@gmail.com>"
-  ],
-  "dependencies": {
-    "suddenutils": "^1.0.0"
+  "version": "1.0.0",
+  "description": "json schema discovery with data tyoes and ranges",
+  "main": "SuddenSchema.js",
+  "directories": {
+    "test": "test"
   },
-  "main": "suddenschema.js",
-  "devDependencies": {
-    "mocha": "^2.1.0",
-    "should": "^4.4.2"
-  },
+  "dependencies": {},
+  "devDependencies": {},
   "scripts": {
     "test": "mocha -R spec ./test"
   },
@@ -22,13 +16,14 @@
     "url": "https://github.com/SuddenDevelopment/SuddenSchema.git"
   },
   "keywords": [
-    "JSON",
-    "Schema"
+    "json",
+    "schema",
+    "discovery"
   ],
-  "author": "Anthony Aragues <anthony.aragues@gmail.com> (http://suddendevelopment.com/)",
-  "license": "MIT",
+  "author": "Anthony Aragues <anthony.aragues@gmail.com> (http://suddendevelopment.com)",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/SuddenDevelopment/SuddenSchema/issues"
   },
-  "readmeFilename": "README.md"
+  "homepage": "https://github.com/SuddenDevelopment/SuddenSchema"
 }

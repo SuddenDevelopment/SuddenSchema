@@ -22,7 +22,7 @@ var arrCollection=[
     ,{"id":4,"source":"wikipedia","user":"wes","score":33,"email":"anthong@whatevs.net" }
     ,{"id":5,"source":"en","user":"anthony","score":78, "url":"https://github.com/SuddenDevelopment"}
     ,{"id":6,"source":"wikipedia","user":"wes","score":43,"domain":"github.com"}
-    ,{"id":7,"source":"twitter","user":"wes","score":56,"parent":{"child":true}}
+    ,{"id":7,"source":"twitter","user":"wes","score":56,"par":{"chi":true}}
     ,{"id":8,"source":"wikipedia","user":"randall","score":24,"text":"And then IBM said we can't bother Steven Brown anymore. But we didn't listen."}
     ,{"id":9,"source":"wikipedia","user":"anthony","score":13,"arr":['anthong@whatevs.net',32,1453503081]}
 ];
@@ -32,11 +32,11 @@ console.log(objSchema);
 
 //do all the keys exist, including ones found in later objects
 describe('test for keys', function () {
- it('should return max=6', function (done) {
+ it('should return key count of 13', function (done) {
     //test    
-    var intKey = objSchema.keys.indexOf("parent.child");
+    var intKey = objSchema.keys.length;
     //check
-   (intKey).should.be.above(0);
+   (intKey).should.be.exactly(13);
    done();
  });
 });

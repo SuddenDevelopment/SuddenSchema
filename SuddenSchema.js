@@ -36,7 +36,7 @@ var SuddenSchema = function(objConfig){
 
 		//run any final checks at the end that we didnt want to do every object or periodically
 		_.for(objSchema.keys,function(v,k){
-			if(typeof objSchema.vals[v]==='undefined'){ console.log(v,'value not found in for endCalc'); }
+			if(typeof objSchema.vals[v]==='undefined'){ console.log(v,'value not found for endCalc'); }
 			else{ objSchema.vals[v] = endVal[objSchema.vals[v].typ](objSchema.vals[v]); }
 		});
 		return objSchema;
@@ -50,22 +50,43 @@ var SuddenSchema = function(objConfig){
 		objSchema.keys = _.unique(arrKeys);
 		//update the values
 		_.for(objSchema.keys,function(v,k){
+			var varVal=_.get(obj,v);
 			//make sure this object has the key we're looking for 1st
-			if(typeof obj[v]!=='undefined'){
+			if(typeof varVal !=='undefined' && varVal!==null){
 				if(typeof objSchema.vals[v]==='undefined'){
-					//create new values object for a key based on var type
-					objSchema.vals[v]=newVal[typeof v](v,{cnt:1});
+					//if it's a compound path, need to create the parent first
+					if(_.strCount('.',v)>0){ 
+						var arrProperties = v.split('.');
+						//using a regular for here because the utils, _.for goes backwards, im sure I could reverse first but that defats the purpose of the fast utility loop
+						for(var i=0;i<arrProperties.length;i++){
+							var strKey=arrProperties.slice(0,i+1).join('.');
+							//this is the end property, the rest is lineage to get here
+							if(i===arrProperties.length-1){ 
+								var tmpVal=newVal[typeof varVal](varVal,{cnt:1});
+								_.set(objSchema.vals,v,tmpVal);
+							}
+							else{ 
+								//lineage	
+								_.set(objSchema.vals,strKey,{});
+							}
+						}
+					}else{
+						//create new values object for a key based on var type
+						objSchema.vals[v]=newVal[typeof varVal](_.get(obj,v),{cnt:1});
+					}
 				}
 				else{
-					objSchema.vals[v].cnt++;
-					objSchema.vals[v] = modVal[typeof v](v,objSchema.vals[v]);
+					_.set(objSchema.vals,v,modVal[typeof varVal](varVal,_.get(objSchema.vals,v)));
 				}
+			}else{
+				//no value found for this object at specified key of v 
 			}
 		});		
 		return objSchema;
 	};
 //----====|| NewValues ||====----\\
 	newVal.object=function(val,objVal){
+		objVal.typ='object';
 		//When this happens it means the object wasnt mapped out for properties to be added to keys yet OR it's an array
 		if(val.constructor===Array){
 

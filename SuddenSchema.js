@@ -76,6 +76,9 @@ var SuddenSchema = function(objConfig){
 					}
 				}
 				else{
+					//console.log(v,varVal);
+					//console.log(_.get(objSchema.vals,v+'cnt')+1);
+					_.set(objSchema.vals,v+'.cnt',_.get(objSchema.vals,v+'.cnt')+1);
 					_.set(objSchema.vals,v,modVal[typeof varVal](varVal,_.get(objSchema.vals,v)));
 				}
 			}else{

@@ -23,7 +23,7 @@ var SuddenSchema = function(objConfig){
 	var intSampleLimit=100;
 	var self=this;
 	this.newSchema=function(arrCollection){
-		return this.modSchema(arrCollection,{keys:{},vals:{}});
+		return this.modSchema(arrCollection,{keys:[],vals:{}});
 	};
 
 	this.modSchema=function(arrCollection,objSchema){
@@ -31,36 +31,38 @@ var SuddenSchema = function(objConfig){
 
 		//process all of the objects
 		_.forEach(arrCollection,function(v,k){
-			self.addObject(v,objSchema);
+			objSchema=self.addObject(v,objSchema);
 		});
 
 		//run any final checks at the end that we didnt want to do every object or periodically
 		_.for(objSchema.keys,function(v,k){
-			objSchema.vals[v] = this.endVal[v.type](objSchema.vals[v]);
+			if(typeof objSchema.vals[v]==='undefined'){ console.log(v,'value not found in for endCalc'); }
+			else{ objSchema.vals[v] = endVal[objSchema.vals[v].typ](objSchema.vals[v]); }
 		});
-
 		return objSchema;
 	};
 
 	this.addObject=function(obj, objSchema){
+		
 		//update the keys
 		var arrKeys = _.deepKeys(obj);
 		arrKeys = arrKeys.concat(objSchema.keys);
-		arrKeys = _.unique(arrKeys);
+		objSchema.keys = _.unique(arrKeys);
 		//update the values
-		_.forEach(arrKeys,function(v,k){
+		_.for(objSchema.keys,function(v,k){
 			//make sure this object has the key we're looking for 1st
 			if(typeof obj[v]!=='undefined'){
-				if(typeof objSchema[v]==='undefined'){
+				if(typeof objSchema.vals[v]==='undefined'){
 					//create new values object for a key based on var type
 					objSchema.vals[v]=newVal[typeof v](v,{cnt:1});
 				}
 				else{
 					objSchema.vals[v].cnt++;
-					objSchema.vals[v] = self.modVal[typeof v](v,objSchema[v]);
+					objSchema.vals[v] = modVal[typeof v](v,objSchema.vals[v]);
 				}
 			}
-		});
+		});		
+		return objSchema;
 	};
 //----====|| NewValues ||====----\\
 	newVal.object=function(val,objVal){
@@ -73,14 +75,14 @@ var SuddenSchema = function(objConfig){
 		return objVal;
 	};
 	newVal.boolean=function(val,objVal){
-		objVal.type='boolean';
+		objVal.typ='boolean';
 		objVal.cnt_true=0;
 		objVal.cnt_false=0;
 		objVal['cnt_'+val]++;
 		return objVal;
 	};
 	newVal.number=function(val,objVal){
-		objVal.type='number';
+		objVal.typ='number';
 		objVal.min=val;
 		objVal.max=val;		
 		objVal.first=val;
@@ -91,7 +93,7 @@ var SuddenSchema = function(objConfig){
 	};
 	newVal.string=function(val,objVal){
 		var intLength=val.length;
-		objVal.type='string'
+		objVal.typ='string'
 		objVal.min=intLength;
 		objVal.max=intLength;
 		objVal.samples=[val];

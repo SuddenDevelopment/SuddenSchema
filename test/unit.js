@@ -40,13 +40,45 @@ describe('test for keys', function () {
    done();
  });
 });
+
 //did it find the correct numeric ranges score: 11->56
+describe('test number ranges', function () {
+ it('should return range min of 8 for score field', function (done) {
+   (objSchema.vals.score.min).should.be.exactly(8);
+   done();
+ });
+});
+describe('test number ranges', function () {
+ it('should return range max of 56 for score field', function (done) {
+   (objSchema.vals.score.max).should.be.exactly(78);
+   done();
+ });
+});
+
 
 //did it give the correct strings data source: length=2->9
+describe('test strings ranges', function () {
+ it('should return range min of 2 for score field', function (done) {
+   (objSchema.vals.source.min).should.be.exactly(2);
+   done();
+ });
+});
+describe('test strings ranges', function () {
+ it('should return range max of 9 for score field', function (done) {
+   (objSchema.vals.source.max).should.be.exactly(9);
+   done();
+ });
+});
 
 //did it properly identify specific data types beyond boolean, string, text:
 
 //cardinality test user: 3
+describe('test user cardinality', function () {
+ it('should return range max of 9 for score field', function (done) {
+   (objSchema.vals.source.cardinality).should.be.exactly(3);
+   done();
+ });
+});
 
 //sample values score:
 

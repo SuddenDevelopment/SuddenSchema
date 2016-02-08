@@ -6,7 +6,7 @@
 - Gives all of the keys found, across all objects, recursively
 - Gives generic data types per key: number, string, boolean
 - Arrays have all of the data types defined within them including obejct definitions, mixed data tpyes included.
-- Attempts to identify more specific data types: UnixTime, JSTime, IP, Email, URL, Domain, proper nouns, acronyms, auto incrementing ID
+- Attempts to identify more specific data types: UnixTime, JSTime, IP, Email, URL, Domain, propper nouns, acronyms, auto incrementing ID
 - String Attributes: all caps, 
 - Gives cardinality, how many unique values exist (up to a limit) vs count.
 - Gives sample values
@@ -19,7 +19,7 @@
 if (typeof window == 'undefined'){var utils = require('suddenutils');}
 var _ = new utils;
 var SuddenSchema = function(objConfig){
-	var modVal = {},newVal={},endVal={};
+	var modVal = {},newVal={},endVal={},find={};
 	var intSampleLimit=100;
 	var self=this;
 	this.newSchema=function(arrCollection){
@@ -43,7 +43,6 @@ var SuddenSchema = function(objConfig){
 	};
 
 	this.addObject=function(obj, objSchema){
-		
 		//update the keys
 		var arrKeys = _.deepKeys(obj);
 		arrKeys = arrKeys.concat(objSchema.keys);
@@ -176,15 +175,39 @@ var SuddenSchema = function(objConfig){
 		return objVal;
 	};
 	endVal.number=function(objVal){
-
+		//test for number only possibilities, unix time, js time, incrementing id
 		return objVal;
 	};
 	endVal.string=function(objVal){
 		objVal.cardinality= _.unique(objVal.samples).length;
+		//could be just about anything check for all string and number possibilities within
+		objVal.dataTypes=find.string(_.unique(objVal.samples));
+		console.log(objVal.dataTypes);
 		return objVal;
 	};
 	endVal.function=function(objVal){
 		return objVal;
 	};
+//----====|| DATA TYPE TESTS ||====----\\
+    find.string = function(arrHaystack){
+      //convert to an array if a single value was given
+      if(arrHaystack.constructor!==Array){ arrHaystack=[arrHaystack]; }
+      //setup the tests
+      var objTests={}, arrTypes=[];
+      objTests.ip = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/;
+      objTests.email= /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; 
+      objTests.url= /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
+      objTests.md5= /^[a-f0-9]{32}$/;
+      objTests.sha1= /\b[0-9a-f]{5,40}\b/;
+      //run each of the tests for each of the values, return the types found
+      _.for(arrHaystack,function(v,k){
+      	_.forOwn(objTests,function(vv,kk){
+      		var torfTest=objTests[kk].test(v);
+      		if(torfTest===true){ arrTypes.push(kk); }
+      	});
+      });
+      arrTypes=_.unique(arrTypes);
+      return arrTypes;
+    };
 }
 if (typeof module !== 'undefined' && module.exports){module.exports = SuddenSchema;}

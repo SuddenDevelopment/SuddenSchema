@@ -71,6 +71,13 @@ describe('test strings ranges', function () {
 });
 
 //did it properly identify specific data types beyond boolean, string, text:
+describe('test specific data types', function () {
+ it('should find email', function (done) {
+   (objSchema.vals.email.dataTypes[0]).should.be.exactly('email');
+   done();
+ });
+});
+
 
 //cardinality test user: 3
 describe('test user cardinality', function () {

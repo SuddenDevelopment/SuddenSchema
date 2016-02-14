@@ -176,6 +176,7 @@ var SuddenSchema = function(objConfig){
 	};
 	endVal.number=function(objVal){
 		//test for number only possibilities, unix time, js time, incrementing id
+		objVal.dataTypes=find.number(objVal.samples);
 		return objVal;
 	};
 	endVal.string=function(objVal){
@@ -189,6 +190,25 @@ var SuddenSchema = function(objConfig){
 		return objVal;
 	};
 //----====|| DATA TYPE TESTS ||====----\\
+    find.number = function(arrHaystack){
+    	if(arrHaystack.constructor!==Array){ arrHaystack=[arrHaystack]; }
+    	var arrTypes=[];
+    	var intSampleJSTime=Date.now();
+    	var intSampleUnixTime = intSampleJSTime/1000;
+    	//test for auto incrementing id
+    	var intUnixTime=0;
+    	var intJSTime=0;
+    	_.for(arrHaystack,function(v,k){
+    		//test for unixtimestamp
+    		if(v>intSampleUnixTime-1000000000&&v<intSampleUnixTime+1000000000){ intUnixTime++; }
+			//test for js/micro timestamp
+    		if(v>intSampleJSTime-1000000000000&&v<intSampleJSTime+1000000000000){ intJSTime++; }
+    	});
+    	if(intUnixTime>intJSTime){arrTypes.push('unixtime')}
+    	if(intUnixTime<intJSTime){arrTypes.push('microtime')}
+    	arrTypes=_.unique(arrTypes);
+    	return arrTypes;
+    };
     find.string = function(arrHaystack){
       //convert to an array if a single value was given
       if(arrHaystack.constructor!==Array){ arrHaystack=[arrHaystack]; }

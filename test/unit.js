@@ -28,7 +28,7 @@ var arrCollection=[
 ];
 var schema = new SuddenSchema();
 var objSchema = schema.newSchema(arrCollection);
-console.log(objSchema);
+//console.log(objSchema);
 
 //do all the keys exist, including ones found in later objects
 describe('test for keys', function () {
@@ -78,10 +78,19 @@ describe('test specific data types', function () {
  });
 });
 
+//did it find unixtime
+console.log(objSchema.vals.ts.dataTypes[0]);
+describe('test specific data types', function () {
+ it('should find unixtime', function (done) {
+   (objSchema.vals.ts.dataTypes[0]).should.be.exactly('unixtime');
+   done();
+ });
+});
+
 
 //cardinality test user: 3
 describe('test user cardinality', function () {
- it('should return range max of 9 for score field', function (done) {
+ it('should return 3 for 3 unique values', function (done) {
    (objSchema.vals.source.cardinality).should.be.exactly(3);
    done();
  });

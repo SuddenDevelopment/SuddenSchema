@@ -36,8 +36,10 @@ var SuddenSchema = function(objConfig){
 
 		//run any final checks at the end that we didnt want to do every object or periodically
 		_.for(objSchema.keys,function(v,k){
-			if(typeof objSchema.vals[v]==='undefined'){ console.log(v,'value not found for endCalc'); }
-			else{ objSchema.vals[v] = endVal[objSchema.vals[v].typ](objSchema.vals[v]); }
+			var tmpVal=_.get(objSchema.vals,v);
+			//console.log('type: ',tmpVal.typ);
+			if(typeof tmpVal==='undefined'){ console.log(v,'value not found for endCalc'); }
+			else{ _.set(objSchema.vals,v,endVal[tmpVal.typ](tmpVal)); }
 		});
 		return objSchema;
 	};
@@ -183,7 +185,7 @@ var SuddenSchema = function(objConfig){
 		objVal.cardinality= _.unique(objVal.samples).length;
 		//could be just about anything check for all string and number possibilities within
 		objVal.dataTypes=find.string(_.unique(objVal.samples));
-		console.log(objVal.dataTypes);
+		//console.log(objVal.dataTypes);
 		return objVal;
 	};
 	endVal.function=function(objVal){

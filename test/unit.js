@@ -79,7 +79,7 @@ describe('test specific data types', function () {
 });
 
 //did it find unixtime
-console.log(objSchema.vals.ts.dataTypes[0]);
+//console.log(objSchema.vals.ts.dataTypes[0]);
 describe('test specific data types', function () {
  it('should find unixtime', function (done) {
    (objSchema.vals.ts.dataTypes[0]).should.be.exactly('unixtime');

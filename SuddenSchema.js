@@ -38,7 +38,7 @@ var SuddenSchema = function(objConfig){
 		_.for(objSchema.keys,function(v,k){
 			var tmpVal=_.get(objSchema.vals,v);
 			//console.log('type: ',tmpVal.typ);
-			if(typeof tmpVal==='undefined'){ console.log(v,'value not found for endCalc'); }
+			if(typeof tmpVal==='undefined' || tmpVal===null){ console.log(v,'value not found for endCalc'); }
 			else{ _.set(objSchema.vals,v,endVal[tmpVal.typ](tmpVal)); }
 		});
 		return objSchema;

@@ -18,17 +18,17 @@ var SuddenSchema   = require("../suddenschema");
 var arrCollection=[
 	 {"id":1,"source":"wikipedia","user":"anthony","score":11,"ts":1453503081}
     ,{"id":2,"source":"wikipedia","user":"randall","score":19,"msts":1453503081000}
-    ,{"id":3,"source":"twitter","user":"anthony","score":8, "ip":"1.2.3.4"}
+    ,{"id":3,"source":"twitter","user":"anthony","score":8, "ip":"1.2.3.4","par":{"chin":true,"chinchin":false}}
     ,{"id":4,"source":"wikipedia","user":"wes","score":33,"email":"anthong@whatevs.net" }
     ,{"id":5,"source":"en","user":"anthony","score":78, "url":"https://github.com/SuddenDevelopment"}
     ,{"id":6,"source":"wikipedia","user":"wes","score":43,"domain":"github.com"}
-    ,{"id":7,"source":"twitter","user":"wes","score":56,"par":{"chi":true}}
+    ,{"id":7,"source":"twitter","user":"wes","score":56,"par":{"chi":true,"chichi":false}}
     ,{"id":8,"source":"wikipedia","user":"randall","score":24,"text":"And then IBM said we can't bother Steven Brown anymore. But we didn't listen."}
     ,{"id":9,"source":"wikipedia","user":"anthony","score":13,"arr":['anthong@whatevs.net',32,1453503081]}
 ];
 var schema = new SuddenSchema();
 var objSchema = schema.newSchema(arrCollection);
-//console.log(objSchema);
+console.log(objSchema);
 
 //do all the keys exist, including ones found in later objects
 describe('test for keys', function () {
@@ -92,6 +92,14 @@ describe('test specific data types', function () {
 describe('test user cardinality', function () {
  it('should return 3 for 3 unique values', function (done) {
    (objSchema.vals.source.cardinality).should.be.exactly(3);
+   done();
+ });
+});
+
+//did it find deep children past the 1st one
+describe('test user cardinality', function () {
+ it('should return boolean on child object', function (done) {
+   (objSchema.vals.par.chichi.typ).should.be.exactly('boolean');
    done();
  });
 });

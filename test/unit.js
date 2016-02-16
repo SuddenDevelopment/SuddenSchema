@@ -32,11 +32,11 @@ console.log(objSchema);
 
 //do all the keys exist, including ones found in later objects
 describe('test for keys', function () {
- it('should return key count of 13', function (done) {
+ it('should return key count of 16', function (done) {
     //test    
     var intKey = objSchema.keys.length;
     //check
-   (intKey).should.be.exactly(13);
+   (intKey).should.be.exactly(16);
    done();
  });
 });
@@ -97,7 +97,7 @@ describe('test user cardinality', function () {
 });
 
 //did it find deep children past the 1st one
-describe('test user cardinality', function () {
+describe('test 2nd child value populating', function () {
  it('should return boolean on child object', function (done) {
    (objSchema.vals.par.chichi.typ).should.be.exactly('boolean');
    done();

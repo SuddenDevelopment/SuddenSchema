@@ -58,7 +58,7 @@ var SuddenSchema = function(objConfig){
 					//if it's a compound path, need to create the parent first
 					if(_.strCount('.',v)>0){ 
 						var arrProperties = v.split('.');
-						//using a regular for here because the utils, _.for goes backwards, im sure I could reverse first but that defats the purpose of the fast utility loop
+						//using a regular for loop here because the utils, _.for goes backwards, im sure I could reverse first but that defats the purpose of the fast utility loop
 						for(var i=0;i<arrProperties.length;i++){
 							var strKey=arrProperties.slice(0,i+1).join('.');
 							//this is the end property, the rest is lineage to get here
@@ -66,7 +66,7 @@ var SuddenSchema = function(objConfig){
 								var tmpVal=newVal[typeof varVal](varVal,{cnt:1});
 								_.set(objSchema.vals,v,tmpVal);
 							}
-							else{ 
+							else if(_.get(objSchema.vals,strKey)===null){ 
 								//lineage	
 								_.set(objSchema.vals,strKey,{});
 							}

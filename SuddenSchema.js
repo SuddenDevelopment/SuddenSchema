@@ -27,6 +27,7 @@ var SuddenSchema = function(objConfig){
 	};
 
 	this.modSchema=function(arrCollection,objSchema){
+		if(arrCollection.constructor!==Array){ arrCollection=[arrCollection]; }
 		//check for too many in a collection? there should be SOME limit
 
 		//process all of the objects

@@ -39,14 +39,16 @@ var SuddenSchema = function(objConfig){
 		_.for(objSchema.keys,function(v,k){
 			var tmpVal=_.get(objSchema.vals,v);
 			//console.log('type: ',tmpVal.typ);
-			if(typeof tmpVal.typ==='undefined' || tmpVal===null){ console.log(v,'value not found for endCalc'); }
+			if(!tmpVal || typeof tmpVal.typ==='undefined' || tmpVal===null){ 
+				//console.log(v,'value not found for endCalc',objSchema.keys); 
+			}
 			else{ _.set(objSchema.vals,v,endVal[tmpVal.typ](tmpVal)); }
-
 		});
 		return objSchema;
 	};
 
 	this.addObject=function(obj, objSchema){
+		if(typeof objSchema === 'undefined'){console.log('no schema given to add to');}
 		//update the keys
 		var arrKeys = _.deepKeys(obj);
 		arrKeys = arrKeys.concat(objSchema.keys);
@@ -221,6 +223,8 @@ var SuddenSchema = function(objConfig){
       objTests.ip = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/;
       objTests.email= /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; 
       objTests.url= /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
+      //objTests.image=/(?:([^:/?#]+):)?(?://([^/?#]*))?([^?#]*\.(?:jpg|gif|png))(?:\?([^#]*))?(?:#(.*))?/;
+      //objTests.video= /(?:([^:/?#]+):)?(?://([^/?#]*))?([^?#]*\.(?:avi|wmv|mp4))(?:\?([^#]*))?(?:#(.*))?/;
       objTests.md5= /^[a-f0-9]{32}$/;
       objTests.sha1= /\b[0-9a-f]{5,40}\b/;
       //run each of the tests for each of the values, return the types found

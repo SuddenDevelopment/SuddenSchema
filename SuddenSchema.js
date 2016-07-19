@@ -105,6 +105,7 @@ var SuddenSchema = function(objConfig){
 	};
 	newVal.boolean=function(val,objVal){
 		objVal.typ='boolean';
+		if( val!=="" && val!==null){ objVal.hasValues=1; }else{ objVal.hasValues=0; }
 		objVal.cnt_true=0;
 		objVal.cnt_false=0;
 		objVal['cnt_'+val]++;
@@ -112,6 +113,7 @@ var SuddenSchema = function(objConfig){
 	};
 	newVal.number=function(val,objVal){
 		objVal.typ='number';
+		if( val!=="" && val!==null){ objVal.hasValues=1; }else{ objVal.hasValues=0; }
 		objVal.min=val;
 		objVal.max=val;		
 		objVal.first=val;
@@ -123,6 +125,7 @@ var SuddenSchema = function(objConfig){
 	newVal.string=function(val,objVal){
 		var intLength=val.length;
 		objVal.typ='string'
+		if( val!=="" && val!==null){ objVal.hasValues=1; }else{ objVal.hasValues=0; }
 		objVal.min=intLength;
 		objVal.max=intLength;
 		objVal.samples=[val];
@@ -142,16 +145,19 @@ var SuddenSchema = function(objConfig){
 		}else{
 			//get the path, add it to the keys, run it bac
 		}
+		if( val!=="" && val!==null){ objVal.hasValues++; }
 		return objVal;
 	};
 	modVal.boolean=function(val,objVal){
 		objVal['cnt_'+val]++;
+		if( val!=="" && val!==null){ objVal.hasValues++; }
 		return objVal;
 	};
 	modVal.number=function(val,objVal){
 		if(val < objVal.min){ objVal.min=val; }
 		if(val > objVal.max){ objVal.max=val; }
 		objVal.last=val;
+		if( val!=="" && val!==null){ objVal.hasValues++; }
 		return objVal;
 	};
 	modVal.string=function(val,objVal){
@@ -165,6 +171,7 @@ var SuddenSchema = function(objConfig){
 			var intStart=Math.floor(intSampleLimit/2);
 			objVal.samples.splice(intStart,intSampleLimit);
 		}
+		if( val!=="" && val!==null){ objVal.hasValues++; }
 		return objVal;
 	};
 	modVal.function=function(objVal){
@@ -216,6 +223,7 @@ var SuddenSchema = function(objConfig){
     	return arrTypes;
     };
     find.string = function(arrHaystack){
+      //TODO: 
       //convert to an array if a single value was given
       if(arrHaystack.constructor!==Array){ arrHaystack=[arrHaystack]; }
       //setup the tests
@@ -223,10 +231,11 @@ var SuddenSchema = function(objConfig){
       objTests.ip = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/;
       objTests.email= /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; 
       objTests.url= /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
-      //objTests.image=/(?:([^:/?#]+):)?(?://([^/?#]*))?([^?#]*\.(?:jpg|gif|png))(?:\?([^#]*))?(?:#(.*))?/;
+      objTests.domain=/([a-z0-9])(([a-z0-9-]{1,61})?[a-z0-9]{1})?(\.[a-z0-9](([a-z0-9-]{1,61})?[a-z0-9‌​]{1})?)?(\.[a-zA-Z]{2,4})+$/;
+      objTests.image=/\.(jpe?g|png|gif)$/i;
       //objTests.video= /(?:([^:/?#]+):)?(?://([^/?#]*))?([^?#]*\.(?:avi|wmv|mp4))(?:\?([^#]*))?(?:#(.*))?/;
       objTests.md5= /^[a-f0-9]{32}$/;
-      objTests.sha1= /\b[0-9a-f]{5,40}\b/;
+      objTests.sha1= /^[0-9a-f]{40}$/;
       //run each of the tests for each of the values, return the types found
       _.for(arrHaystack,function(v,k){
       	_.forOwn(objTests,function(vv,kk){

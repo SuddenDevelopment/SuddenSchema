@@ -112,6 +112,7 @@ var SuddenSchema = function(objConfig){
 		return objVal;
 	};
 	newVal.number=function(val,objVal){
+		//try to determine if it's a unix timestamp
 		objVal.typ='number';
 		if( val!=="" && val!==null){ objVal.hasValues=1; }else{ objVal.hasValues=0; }
 		objVal.min=val;
@@ -213,9 +214,9 @@ var SuddenSchema = function(objConfig){
     	var intJSTime=0;
     	_.for(arrHaystack,function(v,k){
     		//test for unixtimestamp
-    		if(v>intSampleUnixTime-1000000000&&v<intSampleUnixTime+1000000000){ intUnixTime++; }
+    		if(v>intSampleUnixTime-86400&&v<intSampleUnixTime){ intUnixTime++; }
 			//test for js/micro timestamp
-    		if(v>intSampleJSTime-1000000000000&&v<intSampleJSTime+1000000000000){ intJSTime++; }
+    		if(v>intSampleJSTime-86400000&&v<intSampleJSTime){ intJSTime++; }
     	});
     	if(intUnixTime>intJSTime){arrTypes.push('unixtime')}
     	if(intUnixTime<intJSTime){arrTypes.push('microtime')}
@@ -236,6 +237,7 @@ var SuddenSchema = function(objConfig){
       //objTests.video= /(?:([^:/?#]+):)?(?://([^/?#]*))?([^?#]*\.(?:avi|wmv|mp4))(?:\?([^#]*))?(?:#(.*))?/;
       objTests.md5= /^[a-f0-9]{32}$/;
       objTests.sha1= /^[0-9a-f]{40}$/;
+      objTests.sha256= /^[0-9a-f]{64}$/;
       //run each of the tests for each of the values, return the types found
       _.for(arrHaystack,function(v,k){
       	_.forOwn(objTests,function(vv,kk){

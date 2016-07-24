@@ -59,7 +59,7 @@ var SuddenSchema = function(objConfig){
 			var varVal=_.get(obj,v);
 			//make sure this object has the key we're looking for 1st
 			if(typeof varVal !=='undefined' && varVal!==null){
-				if(typeof objSchema.vals[v]==='undefined'){
+				if( _.get(objSchema.vals,v)===null ){
 					//if it's a compound path, need to create the parent first
 					if(_.strCount('.',v)>0){ 
 						var arrProperties = v.split('.');
@@ -98,7 +98,7 @@ var SuddenSchema = function(objConfig){
 		objVal.typ='object';
 		//When this happens it means the object wasnt mapped out for properties to be added to keys yet OR it's an array
 		if(val.constructor===Array){
-
+			objVal.dataTypes=['array'];
 		}else{
 			//we should never get here because every object has deepkeys run on it and added to the keys in the schema
 		}

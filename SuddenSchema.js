@@ -53,6 +53,7 @@ var SuddenSchema = function(objConfig){
 		var arrKeys = _.deepKeys(obj);
 		arrKeys = arrKeys.concat(objSchema.keys);
 		objSchema.keys = _.unique(arrKeys);
+		objSchema.keys.sort();
 		//update the values
 		_.for(objSchema.keys,function(v,k){
 			var varVal=_.get(obj,v);

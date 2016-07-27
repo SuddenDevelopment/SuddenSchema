@@ -111,6 +111,7 @@ var SuddenSchema = function(objConfig){
 		objVal.cnt_true=0;
 		objVal.cnt_false=0;
 		objVal['cnt_'+val]++;
+		objVal.dataTypes=['boolean'];
 		return objVal;
 	};
 	newVal.number=function(val,objVal){
@@ -190,7 +191,6 @@ var SuddenSchema = function(objConfig){
 		return objVal;
 	}
 	endVal.boolean=function(objVal){
-
 		return objVal;
 	};
 	endVal.number=function(objVal){

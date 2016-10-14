@@ -1,5 +1,3 @@
-'use strict';
-
 /*
 
 ## FEATURES:
@@ -17,8 +15,9 @@
 */
 
 if (typeof window == 'undefined'){var utils = require('suddenutils');}
-var _ = new utils;
+var _ = new utils();
 var SuddenSchema = function(objConfig){
+	'use strict';
 	var modVal = {},newVal={},endVal={},find={};
 	var intSampleLimit=100;
 	var self=this;
@@ -123,12 +122,12 @@ var SuddenSchema = function(objConfig){
 		objVal.first=val;
 		objVal.last=val;
 		objVal.dataTypes=[];
-		objVal.samples=[val]
+		objVal.samples=[val];
 		return objVal;
 	};
 	newVal.string=function(val,objVal){
 		var intLength=val.length;
-		objVal.typ='string'
+		objVal.typ='string';
 		if( val!=="" && val!==null){ objVal.hasValues=1; }else{ objVal.hasValues=0; }
 		objVal.min=intLength;
 		objVal.max=intLength;
@@ -189,7 +188,7 @@ var SuddenSchema = function(objConfig){
 	};
 	endVal.array=function(objVal){
 		return objVal;
-	}
+	};
 	endVal.boolean=function(objVal){
 		return objVal;
 	};
@@ -223,8 +222,8 @@ var SuddenSchema = function(objConfig){
 			//test for js/micro timestamp
     		if(v>intSampleJSTime-86400000&&v<intSampleJSTime){ intJSTime++; }
     	});
-    	if(intUnixTime>intJSTime){arrTypes.push('unixtime')}
-    	if(intUnixTime<intJSTime){arrTypes.push('microtime')}
+    	if(intUnixTime>intJSTime){arrTypes.push('unixtime');}
+    	if(intUnixTime<intJSTime){arrTypes.push('microtime');}
     	arrTypes=_.unique(arrTypes);
     	return arrTypes;
     };
@@ -237,7 +236,7 @@ var SuddenSchema = function(objConfig){
       objTests.ip = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/;
       objTests.email= /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; 
       objTests.url= /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
-      objTests.domain=/([a-z0-9])(([a-z0-9-]{1,61})?[a-z0-9]{1})?(\.[a-z0-9](([a-z0-9-]{1,61})?[a-z0-9‌​]{1})?)?(\.[a-zA-Z]{2,4})+$/;
+      objTests.domain=/([a-z0-9])(([a-z0-9-]{1,61})?[a-z0-9]{1})?(\.[a-z0-9](([a-z0-9-]{1,61})?[a-z0-9]{1})?)?(\.[a-zA-Z]{2,4})+$/;
       objTests.image=/\.(jpe?g|png|gif)$/i;
       //objTests.video= /(?:([^:/?#]+):)?(?://([^/?#]*))?([^?#]*\.(?:avi|wmv|mp4))(?:\?([^#]*))?(?:#(.*))?/;
       objTests.md5= /^[a-f0-9]{32}$/;
@@ -254,5 +253,5 @@ var SuddenSchema = function(objConfig){
       arrTypes=_.unique(arrTypes);
       return arrTypes;
     };
-}
+};
 if (typeof module !== 'undefined' && module.exports){module.exports = SuddenSchema;}

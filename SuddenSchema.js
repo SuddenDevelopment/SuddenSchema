@@ -14,8 +14,8 @@
 
 */
 
-if (typeof window == 'undefined'){var utils = require('suddenutils'); var tester = require('datatypetester');}
-var _ = new utils(); var libTypeTester = new tester();
+if (typeof window == 'undefined'){var utils = require('suddenutils'); var datatypetester = require('datatypetester');}
+var _ = new utils(); var libTypeTester = new datatypetester();
 var SuddenSchema = function(objConfig){
 	'use strict';
 	var modVal = {},newVal={},endVal={},find={};

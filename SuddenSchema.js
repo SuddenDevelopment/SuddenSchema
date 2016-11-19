@@ -14,8 +14,8 @@
 
 */
 
-if (typeof window == 'undefined'){var utils = require('suddenutils');}
-var _ = new utils();
+if (typeof window == 'undefined'){var utils = require('suddenutils'); var tester = require('datatypetester');}
+var _ = new utils(); var libTypeTester = new tester();
 var SuddenSchema = function(objConfig){
 	'use strict';
 	var modVal = {},newVal={},endVal={},find={};
@@ -194,13 +194,14 @@ var SuddenSchema = function(objConfig){
 	};
 	endVal.number=function(objVal){
 		//test for number only possibilities, unix time, js time, incrementing id
-		objVal.dataTypes=find.number(objVal.samples);
+		objVal.dataTypes=libTypeTester.test(objVal.samples);
 		return objVal;
 	};
 	endVal.string=function(objVal){
 		objVal.cardinality= _.unique(objVal.samples).length;
 		//could be just about anything check for all string and number possibilities within
-		objVal.dataTypes=find.string(_.unique(objVal.samples));
+		//objVal.dataTypes=find.string(_.unique(objVal.samples));
+		objVal.dataTypes=libTypeTester.test(_.unique(objVal.samples));
 		//console.log(objVal.dataTypes);
 		return objVal;
 	};
@@ -208,6 +209,7 @@ var SuddenSchema = function(objConfig){
 		return objVal;
 	};
 //----====|| DATA TYPE TESTS ||====----\\
+    /* MOVED TO EXTERNAL LIBRARY DATATYPETESTER
     find.number = function(arrHaystack){
     	if(arrHaystack.constructor!==Array){ arrHaystack=[arrHaystack]; }
     	var arrTypes=[];
@@ -228,7 +230,7 @@ var SuddenSchema = function(objConfig){
     	return arrTypes;
     };
     find.string = function(arrHaystack){
-      //TODO: 
+      //TODO: move to regextests lib
       //convert to an array if a single value was given
       if(arrHaystack.constructor!==Array){ arrHaystack=[arrHaystack]; }
       //setup the tests
@@ -253,5 +255,6 @@ var SuddenSchema = function(objConfig){
       arrTypes=_.unique(arrTypes);
       return arrTypes;
     };
+    */
 };
 if (typeof module !== 'undefined' && module.exports){module.exports = SuddenSchema;}

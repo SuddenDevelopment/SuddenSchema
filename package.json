@@ -7,7 +7,8 @@
     "test": "test"
   },
   "dependencies": {
-    "datatypetester": "git+https://github.com/SuddenDevelopment/dataTypeTester.git#master"
+    "datatypetester": "git+https://github.com/SuddenDevelopment/dataTypeTester.git",
+    "suddenutils": "git+https://github.com/SuddenDevelopment/utils.git"
   },
   "devDependencies": {},
   "scripts": {

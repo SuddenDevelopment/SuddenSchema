@@ -9,7 +9,7 @@
 </head>
 <body ng-controller='controllerMain'>
 <md-button ng-click="fnParse()" class="md-raised">go</md-button>
-<textarea ng-model="tmp.json"></textarea>
+<textarea ng-model="tmp.json" style="height:50%;width:100%;"></textarea>
 	
 <md-menu ng-if="objSchema.schema.keys" ng-repeat="strKey in objSchema.schema.keys">
 	<div  ng-click="$mdOpenMenu($event)">
@@ -30,12 +30,18 @@
 <script src="../node_modules/datatypetester/datatypetester.js"></script>
 <script src="../SuddenSchema.js"></script>
 <script>
+var arrTest=["largeserver.net"];
+for(var i=0;i<arrTest.length;i++){
+	console.log( typeof arrTest[i] );
+}
+
+
 var app = angular.module('appMain', ['ngMaterial']).config(function($mdThemingProvider) {
 	  $mdThemingProvider.theme('default').dark();
 	});
 app.controller('controllerMain', function($scope,$mdDialog) {
 	$scope.tmp={};
-	$scope.tmp.json='{"channel":"p0f.events","client_ip":"106.75.79.131","client_port":49408,"link":"DSL","mod":"mtu","raw_mtu":"1452","server_ip":"46.101.95.60","server_port":22,"subject":"cli","timestamp":"2017/06/06 04:41:52"}';
+	$scope.tmp.json='';
 	//schema will have .keys flattened array and .vals collection to match once data is loaded
 	$scope.objSchema = new SuddenSchema();
 	$scope.openMenu = function($mdMenu,ev) {
